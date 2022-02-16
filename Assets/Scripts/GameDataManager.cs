@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class GameDataManager : MonoBehaviour
 {
     public string playerNameIn;
     public static GameDataManager dataManager;
+    public int bestScore;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -19,7 +22,34 @@ public class GameDataManager : MonoBehaviour
     }
     public void PlayerNameInput(string p)
     {
-         playerNameIn = p;
+        playerNameIn = p;
         Debug.Log(playerNameIn);
     }
+    [System.Serializable]
+    class SaveData
+    {
+        public int bestScore;
+    }
+    public void SaveBestScore()
+    {
+        SaveData scoreData = new SaveData();
+        scoreData.bestScore = bestScore;
+
+        string scoreJson = JsonUtility.ToJson(scoreData);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", scoreJson);
+    }
+    public void LoadBestScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            Debug.Log("se ha encontrado la ruta del numero");//kita
+            string scoreJson = File.ReadAllText(path);
+            SaveData scoreData = JsonUtility.FromJson<SaveData>(scoreJson);
+            Debug.Log("se ha encontrado el numero" + scoreData.bestScore);//kita
+            bestScore = scoreData.bestScore;
+        }
+    }
+
 }

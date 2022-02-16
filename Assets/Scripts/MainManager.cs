@@ -11,15 +11,19 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text bestScoreText;
     public Text playerNameText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
     private int m_Points;
+    private int hPoints;
     
     private bool m_GameOver = false;
-
     
+    public string nameToDIsplay;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +43,7 @@ public class MainManager : MonoBehaviour
             }
         }
         PlayerName();
+        
         
     }
 
@@ -80,8 +85,11 @@ public class MainManager : MonoBehaviour
 
     public void PlayerName()
     {
-        string nameToDIsplay = GameDataManager.dataManager.playerNameIn;
+         nameToDIsplay = GameDataManager.dataManager.playerNameIn;
         playerNameText.text = "Name :" + nameToDIsplay;
 
     }
+   
+
+    
 }
