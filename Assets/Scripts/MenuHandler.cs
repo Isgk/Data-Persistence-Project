@@ -9,6 +9,7 @@ using UnityEditor;
 
 public class MenuHandler : MonoBehaviour
 {
+    public static MenuHandler menuHandlerIN;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,5 +33,10 @@ public class MenuHandler : MonoBehaviour
 #else
         Application.Quit(); // original code to quit Unity player
 #endif
+    }
+    
+    public void PlayerNameInput (string playerNameIn)
+    {
+        Debug.Log(playerNameIn);
     }
 }
