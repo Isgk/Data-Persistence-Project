@@ -40,17 +40,23 @@ public class MainManager : MonoBehaviour
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
+                
             }
         }
         PlayerName();
-        
-        
+        GameDataManager.dataManager.LoadBestScore();
+
+
+
     }
 
     private void Update()
     {
         if (!m_Started)
         {
+           
+            
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
@@ -60,15 +66,19 @@ public class MainManager : MonoBehaviour
 
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+                
+
             }
         }
         else if (m_GameOver)
         {
+            GameDataManager.dataManager.SaveBestScore();
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        UpdateBestScore(GameDataManager.dataManager.bestScore, GameDataManager.dataManager.bestName);
     }
 
     void AddPoint(int point)
@@ -89,7 +99,24 @@ public class MainManager : MonoBehaviour
         playerNameText.text = "Name :" + nameToDIsplay;
 
     }
-   
+    public void UpdateBestScore(int highScore , string currentPlayer)
+    {
+        currentPlayer = GameDataManager.dataManager.bestName;
+        highScore = GameDataManager.dataManager.bestScore;
+        if (GameDataManager.dataManager.bestScore < m_Points)
+        {
+            GameDataManager.dataManager.bestScore = m_Points;
+            GameDataManager.dataManager.bestName = nameToDIsplay;
+            
+            
 
-    
+            Debug.Log(GameDataManager.dataManager.bestScore);
+        }
+        
+
+        bestScoreText.text = "Best Score: "+ GameDataManager.dataManager.bestName + " : " +  GameDataManager.dataManager.bestScore;
+    }
+
+
+
 }
